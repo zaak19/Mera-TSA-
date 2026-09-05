@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6b4226">
+  <title>Mera TSA — Votre vie privée, organisée</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Splash / Maquette 1 -->
+  <section id="splashScreen" class="splash-screen" aria-label="Chargement">
+    <div class="splash-card">
+      <img src="assets/mera-logo.png" class="splash-logo" alt="Mera TSA">
+      <h1>Mera TSA</h1>
+      <p>by Trillion Software</p>
+    </div>
+  </section>
+
+  <main id="app" class="app hidden">
+    <!-- Auth / Maquette 2 -->
+    <section id="authView" class="view auth-view">
+      <div class="auth-header">
+        <img src="assets/mera-logo.png" class="brand-icon" alt="Mera TSA">
+        <h1>Mera TSA</h1>
+        <p>Votre espace personnel et privé.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="tabs">
+          <button class="tab active" data-auth-tab="register">Créer un compte</button>
+          <button class="tab" data-auth-tab="login">Se connecter</button>
+        </div>
+
+        <form id="registerForm" class="auth-form">
+          <label>Adresse e-mail
+            <input id="registerEmail" type="email" required placeholder="exemple@email.com">
+          </label>
+          <label>Mot de passe
+            <input id="registerPassword" type="password" minlength="8" required placeholder="Minimum 8 caractères">
+          </label>
+          <label>Confirmer le mot de passe
+            <input id="registerConfirmPassword" type="password" minlength="8" required placeholder="Confirmez le mot de passe">
+          </label>
+          <button class="primary-btn" type="submit">Créer mon compte</button>
+        </form>
+
+        <form id="loginForm" class="auth-form hidden">
+          <label>Adresse e-mail
+            <input id="loginEmail" type="email" required>
+          </label>
+          <label>Mot de passe
+            <input id="loginPassword" type="password" required>
+          </label>
+          <button class="primary-btn" type="submit">Se connecter</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- PIN setup -->
+    <section id="pinSetupView" class="view hidden center-view">
+      <div class="simple-card">
+        <h2>Protégez votre application</h2>
+        <p>Choisissez un code de verrouillage à 4, 6 ou 8 chiffres.</p>
+        <div class="pin-options">
+          <button data-pin-length="4" class="pin-length active">4 chiffres</button>
+          <button data-pin-length="6" class="pin-length">6 chiffres</button>
+          <button data-pin-length="8" class="pin-length">8 chiffres</button>
+        </div>
+        <label>Votre code
+          <input id="newPin" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••">
+        </label>
+        <label>Confirmer le code
+          <input id="confirmPin" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••">
+        </label>
+        <button id="savePinBtn" class="primary-btn">Activer le verrouillage</button>
+      </div>
+    </section>
+
+    <!-- PIN lock -->
+    <section id="lockView" class="view hidden center-view">
+      <div class="simple-card">
+        <h2>Mera TSA est verrouillé</h2>
+        <p>Saisissez votre code pour accéder à vos données.</p>
+        <input id="unlockPin" class="pin-input" inputmode="numeric" pattern="[0-9]*" placeholder="Code de verrouillage">
+        <button id="unlockBtn" class="primary-btn">Déverrouiller</button>
+        <button id="logoutBtn" class="text-btn">Se déconnecter</button>
+      </div>
+    </section>
+
+    <!-- Maquette 3 -->
+    <section id="choiceView" class="view hidden">
+      <div class="top-bar">
+        <div>
+          <span class="eyebrow">MERA TSA</span>
+          <h2>Que souhaitez-vous faire ?</h2>
+        </div>
+        <button class="lock-small" id="manualLockBtn" title="Verrouiller">🔒</button>
+      </div>
+
+      <div class="choice-grid">
+        <button id="goBusinessCard" class="choice-card">
+          <span class="choice-icon">💼</span>
+          <strong>Générer une carte de visite</strong>
+          <small>Créez votre carte professionnelle avec un QR code unique.</small>
+        </button>
+        <button id="goDocuments" class="choice-card">
+          <span class="choice-icon">📁</span>
+          <strong>Mes documents</strong>
+          <small>Conservez et gérez jusqu'à 15 documents personnels.</small>
+        </button>
+      </div>
+    </section>
+
+    <!-- Business card profile -->
+    <section id="businessCardView" class="view hidden">
+      <div class="page-header">
+        <button class="back-btn" data-back="choiceView">← Retour</button>
+        <h2>Votre carte de visite</h2>
+      </div>
+      <form id="businessCardForm" class="form-card">
+        <div class="profile-upload">
+          <img id="cardPhotoPreview" class="avatar-preview" alt="Aperçu">
+          <label class="secondary-btn">Ajouter une photo
+            <input id="cardPhoto" type="file" accept="image/*" hidden>
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>Nom<input id="cardLastName" required></label>
+          <label>Prénom<input id="cardFirstName" required></label>
+          <label>E-mail<input id="cardEmail" type="email" required></label>
+          <label>Lieu (Pays, Ville)<input id="cardLocation" required placeholder="Togo, Lomé"></label>
+          <label>Nom du domaine<input id="cardDomain" required placeholder="Ex. Technologie"></label>
+          <label>Métier<input id="cardJob" required placeholder="Ex. Développeur"></label>
+        </div>
+        <div class="warning-box">
+          Vérifiez attentivement vos informations. Après validation du compte, les données et la couleur de la carte ne pourront être modifiées qu'après un mois.
+        </div>
+        <button class="primary-btn" type="submit">Vérifier mes informations</button>
+      </form>
+    </section>
+
+    <!-- Business review -->
+    <section id="businessReviewView" class="view hidden">
+      <div class="page-header">
+        <button class="back-btn" data-back="businessCardView">← Modifier</button>
+        <h2>Vérification</h2>
+      </div>
+      <div id="businessReviewContent" class="review-card"></div>
+      <button id="businessReviewContinue" class="primary-btn">Continuer vers l'abonnement</button>
+    </section>
+
+    <!-- Documents profile -->
+    <section id="documentsProfileView" class="view hidden">
+      <div class="page-header">
+        <button class="back-btn" data-back="choiceView">← Retour</button>
+        <h2>Mes documents</h2>
+      </div>
+      <form id="documentsProfileForm" class="form-card">
+        <div class="profile-upload">
+          <img id="docPhotoPreview" class="avatar-preview" alt="Aperçu">
+          <label class="secondary-btn">Ajouter une photo
+            <input id="docPhoto" type="file" accept="image/*" hidden>
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>Nom<input id="docLastName" required></label>
+          <label>Prénom<input id="docFirstName" required></label>
+          <label>Indicatif
+            <select id="countryCode" required>
+              <option value="+228">Togo +228</option>
+              <option value="+33">France +33</option>
+              <option value="+1">États-Unis +1</option>
+              <option value="+44">Royaume-Uni +44</option>
+              <option value="+234">Nigeria +234</option>
+              <option value="+229">Bénin +229</option>
+              <option value="+225">Côte d’Ivoire +225</option>
+              <option value="+221">Sénégal +221</option>
+            </select>
+          </label>
+          <label>Numéro de téléphone<input id="docPhone" inputmode="tel" required></label>
+        </div>
+        <div class="warning-box">
+          Vérifiez attentivement vos informations. Après validation, votre profil principal ne pourra être modifié qu'après un mois.
+        </div>
+        <button class="primary-btn" type="submit">Vérifier mon profil</button>
+      </form>
+    </section>
+
+    <!-- Subscription -->
+    <section id="subscriptionView" class="view hidden">
+      <div class="page-header">
+        <button class="back-btn" id="subscriptionBackBtn">← Retour</button>
+        <h2>Choisir un abonnement</h2>
+      </div>
+      <div class="subscription-switch">
+        <button class="currency-btn active" data-currency="XOF">FCFA</button>
+        <button class="currency-btn" data-currency="EUR">EUR</button>
+        <button class="currency-btn" data-currency="USD">USD</button>
+      </div>
+      <div class="plans">
+        <label class="plan-card">
+          <input type="radio" name="plan" value="monthly" checked>
+          <span><strong>Mensuel</strong><b id="monthlyPrice">2 000 FCFA</b><small>Accès pendant 1 mois</small></span>
+        </label>
+        <label class="plan-card">
+          <input type="radio" name="plan" value="annual">
+          <span><strong>Annuel</strong><b id="annualPrice">7 000 FCFA</b><small>Accès pendant 1 an</small></span>
+        </label>
+      </div>
+      <h3>Moyen de paiement</h3>
+      <select id="paymentMethod" class="full-select">
+        <option value="">Choisissez un moyen</option>
+        <option>PayPal</option>
+        <option>TMoney</option>
+        <option>Mixx by Yas</option>
+        <option>Flooz</option>
+        <option>MTN</option>
+        <option>Visa / Carte bancaire</option>
+        <option>Wise</option>
+        <option>Orange Money</option>
+      </select>
+      <button id="payBtn" class="primary-btn">Valider le paiement</button>
+      <p class="small-note">Prototype : aucun paiement réel n'est effectué tant qu'une passerelle de paiement sécurisée n'est pas connectée.</p>
+    </section>
+
+    <!-- Pending validation -->
+    <section id="pendingView" class="view hidden center-view">
+      <div class="simple-card">
+        <div class="pending-icon">⏳</div>
+        <h2>Paiement enregistré</h2>
+        <p>Votre paiement a été enregistré. Veuillez patienter environ 2 à 3 heures pendant la vérification et la validation de votre profil.</p>
+        <p>Une confirmation pourra être envoyée à votre adresse e-mail. Vous pouvez revenir plus tard.</p>
+        <button id="pendingHomeBtn" class="primary-btn">Retour à l'accueil</button>
+      </div>
+    </section>
+
+    <!-- Active business card -->
+    <section id="cardResultView" class="view hidden">
+      <div class="page-header">
+        <button class="back-btn" data-back="choiceView">← Accueil</button>
+        <h2>Ma carte de visite</h2>
+      </div>
+      <div id="businessCardPreview" class="business-card theme-brown">
+        <img id="resultPhoto" class="business-avatar" alt="Profil">
+        <div class="business-data">
+          <h2 id="resultName">Nom Prénom</h2>
+          <p id="resultJob"></p>
+          <p id="resultDomain"></p>
+          <p id="resultEmail"></p>
+          <p id="resultLocation"></p>
+        </div>
+        <div class="qr-area">
+          <div id="qrPlaceholder" class="qr-placeholder">QR</div>
+          <small>Code unique</small>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button id="themeBtn" class="secondary-btn">Changer le thème</button>
+        <button id="downloadPdfBtn" class="primary-btn">Télécharger en PDF</button>
+      </div>
+      <div id="themePicker" class="theme-picker hidden"></div>
+    </section>
+
+    <!-- Documents vault -->
+    <section id="documentsVaultView" class="view hidden">
+      <div class="page-header">
+        <button class="back-btn" data-back="choiceView">← Accueil</button>
+        <h2>Mes documents</h2>
+      </div>
+      <div class="vault-info">
+        <strong id="documentCount">0 / 15 documents</strong>
+        <p>Ajoutez, téléchargez, partagez ou supprimez vos documents.</p>
+      </div>
+      <label class="primary-btn upload-doc-btn">
+        Ajouter un document
+        <input id="documentUpload" type="file" accept=".pdf,image/*" hidden>
+      </label>
+      <div id="documentList" class="document-list"></div>
+    </section>
+  </main>
+
+  <!-- Lightweight modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <h3 id="modalTitle">Information</h3>
+      <p id="modalText"></p>
+      <button id="modalClose" class="primary-btn">Compris</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
